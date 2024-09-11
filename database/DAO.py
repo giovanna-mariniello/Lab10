@@ -14,16 +14,18 @@ class DAO():
         cursor = cnx.cursor(dictionary=True)
         query = """ SELECT c.CCode, c.StateAbb, c.StateNme
                     FROM country c, contiguity c1
-                    WHERE c1.'year' <= %s
+                    WHERE c1.year <= %s
                     AND c1.state1no = c.CCode
-                    GROUP BY c.state1no
+                    GROUP BY c1.state1no
                     ORDER BY StateAbb
                     """
 
         cursor.execute(query, (anno,))
 
+
         for row in cursor:
             result.append(Stato(**row))
+
 
         cursor.close()
         cnx.close()
@@ -39,7 +41,7 @@ class DAO():
         cursor = cnx.cursor(dictionary=True)
         query = """ SELECT c.state1no, c.state2no
                     FROM contiguity c
-                    WHERE c.'year' <= %s AND c.conttype = 1 """
+                    WHERE c.year <= %s AND c.conttype = 1 """
 
         cursor.execute(query, (anno,))
 

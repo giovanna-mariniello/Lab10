@@ -23,10 +23,17 @@ class DBConnect:
                 cls._cnxpool = mysql.connector.pooling.MySQLConnectionPool(
                     pool_name=pool_name,
                     pool_size=pool_size,
+                    charset="utf8mb3",
+                    collation="utf8mb3_unicode_ci",
                     option_files=f"{pathlib.Path(__file__).resolve().parent}/connector.cnf"
                 )
+
+                print("Mi sono connesso!!")
+
                 return cls._cnxpool.get_connection()
             except mysql.connector.Error as err:
+                print("Errore!!!")
+                print(err.errno)
                 if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
                     print("Something is wrong with your user name or password")
                     return None
